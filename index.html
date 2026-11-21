@@ -114,9 +114,9 @@
     .privacy-note { margin: 16px 2px 0; color: #a9c0b3; font-size: .78rem; }
 
     .main-shell { margin-left: var(--sidebar); min-height: 100vh; }
-    .mobile-bar { display: none; }
+    .mobile-bar, .mobile-more-menu { display: none; }
     .page { width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding: 42px 0 76px; }
-    .page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
+    .page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 18px 0 clamp(42px, 4vw, 56px); }
     .eyebrow { margin: 0 0 7px; color: var(--forest-2); font-size: .78rem; font-weight: 760; letter-spacing: .11em; text-transform: uppercase; }
     h1, h2, h3, p { margin-top: 0; }
     h1 { margin-bottom: 7px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 4vw, 3.35rem); line-height: 1.05; letter-spacing: -.035em; font-weight: 500; }
@@ -193,6 +193,13 @@
     .setup-dot.done { background: var(--peach); }
 
     .plan-grid { grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr); align-items: start; }
+    .plan-top-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+    .plan-share-note { grid-column: 1; grid-row: 1; padding: 11px 14px; border-left: 4px solid var(--peach); border-radius: 0 11px 11px 0; background: var(--peach-pale); color: #68483b; font-size: .84rem; }
+    .plan-share-note p { margin: 0; }
+    .plan-basics { grid-column: 1; grid-row: 2; }
+    .plan-expenses { grid-column: 2; grid-row: 2; }
+    .plan-expenses .section-head > div { min-width: 0; }
+    .plan-expenses .section-head .button { flex: 0 0 auto; white-space: nowrap; }
     .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px; }
     .field { display: grid; gap: 7px; align-content: start; }
     .field.span-2 { grid-column: 1 / -1; }
@@ -229,7 +236,7 @@
       background: var(--ivory);
     }
     .welcome-copy { padding: clamp(36px, 7vw, 104px); display: flex; flex-direction: column; justify-content: center; }
-    .welcome .brand { margin-bottom: clamp(50px, 11vh, 112px); color: var(--forest); }
+    .welcome .brand { margin-bottom: clamp(24px, 4vh, 46px); color: var(--forest); }
     .welcome h1 { max-width: 700px; font-size: clamp(3.2rem, 7vw, 6.3rem); }
     .welcome-lede { max-width: 620px; margin: 22px 0 32px; color: var(--ink-soft); font-size: clamp(1.05rem, 1.8vw, 1.35rem); }
     .welcome-fine { max-width: 620px; margin: 24px 0 0; color: var(--ink-soft); font-size: .82rem; }
@@ -445,14 +452,23 @@
       .mobile-nav-button { border: 0; border-radius: 10px; background: transparent; color: var(--ink-soft); display: grid; place-items: center; gap: 2px; font-size: .69rem; cursor: pointer; }
       .mobile-nav-button.active { background: var(--sage-light); color: var(--forest); font-weight: 750; }
       .mobile-nav-button svg { width: 20px; height: 20px; }
+      .mobile-more { position: relative; min-width: 0; }
+      .mobile-more > summary { height: 100%; list-style: none; }
+      .mobile-more > summary::-webkit-details-marker { display: none; }
+      .mobile-more[open] > summary { background: var(--sage-light); color: var(--forest); font-weight: 750; }
+      .mobile-more-menu { position: absolute; right: 0; bottom: calc(100% + 14px); width: min(292px, calc(100vw - 24px)); padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 7px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper-strong); box-shadow: var(--shadow); }
+      .mobile-more-action { min-height: 48px; padding: 10px 11px; display: flex; align-items: center; gap: 9px; border: 1px solid var(--line); border-radius: 11px; background: var(--paper); color: var(--forest); text-align: left; cursor: pointer; }
+      .mobile-more-action.active { border-color: var(--sage); background: var(--sage-light); font-weight: 750; }
+      .mobile-more-action .nav-icon { flex: 0 0 auto; }
+      .mobile-more-action.danger { color: var(--danger); }
       .summary-grid, .forecast-summary { grid-template-columns: 1fr 1fr; }
       .summary-card:first-child { grid-column: 1 / -1; }
       .forecast-summary .summary-card:first-child { grid-column: auto; }
       .content-grid, .plan-grid { grid-template-columns: 1fr; }
+      .plan-share-note, .plan-basics, .plan-expenses { grid-column: 1; grid-row: auto; }
       .lab-layout { grid-template-columns: 1fr; }
       .lab-results { position: static; }
       .garden-card { position: static; }
-      .mobile-bar { grid-template-columns: repeat(7, 1fr); }
       .mobile-file-feedback { position: fixed; z-index: 29; right: 12px; bottom: 76px; left: 12px; display: block; padding: 9px 12px; border-radius: 10px; background: var(--danger); color: white; font-size: .78rem; box-shadow: var(--shadow-soft); }
     }
 
@@ -463,7 +479,7 @@
 
     @media (max-width: 600px) {
       .page { width: min(100% - 28px, 1180px); padding: 26px 0 48px; }
-      .page-header { display: block; margin-bottom: 23px; }
+      .page-header { display: block; margin: 12px 0 34px; }
       .page-header .button-row { margin-top: 17px; }
       .summary-grid, .forecast-summary { grid-template-columns: 1fr; }
       .summary-card:first-child { grid-column: auto; }
@@ -475,7 +491,7 @@
       .form-grid { grid-template-columns: 1fr; }
       .field.span-2 { grid-column: auto; }
       .welcome-copy { padding: 28px 22px 45px; }
-      .welcome .brand { margin-bottom: 64px; }
+      .welcome .brand { margin-bottom: 28px; }
       .welcome h1 { font-size: clamp(2.9rem, 16vw, 4.6rem); }
       .welcome-art { min-height: 320px; padding: 25px; }
       .onboarding { padding: 16px; place-items: start center; }
@@ -1123,23 +1139,28 @@
       function loadLocal() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return;
+          if (!raw) { resetSessionState(); return false; }
           const stored = JSON.parse(raw);
+          if (!isPlainObject(stored)) throw new Error("Stored data is invalid");
           const result = validatePlan(stored.plan);
           if (!result.valid) throw new Error("Stored data is invalid");
           state.plan = normalizePlan(stored.plan);
           state.planDirty = stored.planDirty === undefined ? Boolean(stored.dirty) : Boolean(stored.planDirty);
           if (stored.scenarioDraft && validateScenario(stored.scenarioDraft, 0).length === 0) {
-            state.scenarioDraft = stored.scenarioDraft;
-            state.scenarioDraftBaseline = stored.scenarioDraftBaseline || clonePlan(stored.scenarioDraft);
+            state.scenarioDraft = clonePlan(stored.scenarioDraft);
+            state.scenarioDraftBaseline = stored.scenarioDraftBaseline && validateScenario(stored.scenarioDraftBaseline, 0).length === 0 ? clonePlan(stored.scenarioDraftBaseline) : clonePlan(stored.scenarioDraft);
             state.scenarioDraftDirty = Boolean(stored.scenarioDraftDirty);
-            state.activeScenarioId = typeof stored.activeScenarioId === "string" ? stored.activeScenarioId : null;
+            state.activeScenarioId = typeof stored.activeScenarioId === "string" && state.plan.scenarios.some(scenario => scenario.id === stored.activeScenarioId) ? stored.activeScenarioId : null;
           }
           state.dirty = state.planDirty || state.scenarioDraftDirty;
           state.screen = "app";
+          state.view = "overview";
+          return true;
         } catch (_) {
           try { localStorage.removeItem(STORAGE_KEY); } catch (_) { storageAvailable = false; }
+          resetSessionState();
           showToast("Saved browser data could not be opened, so it was left out.", true);
+          return false;
         }
       }
 
@@ -1179,6 +1200,24 @@
         state.contributionPreview = null;
         state.sharedEditorId = null;
         state.scenarioEditingChangeId = null;
+      }
+
+      function resetSessionState() {
+        state.screen = "welcome";
+        state.view = "overview";
+        state.onboardingStep = 1;
+        state.plan = null;
+        state.dirty = false;
+        state.planDirty = false;
+        state.scenarioDraft = null;
+        state.scenarioDraftBaseline = null;
+        state.scenarioDraftDirty = false;
+        state.activeScenarioId = null;
+        state.forecastHorizon = 30;
+        state.forecastIncomeMode = "expected";
+        state.forecastInspectIndex = 0;
+        state.labInspectIndex = 0;
+        resetTransientEditors();
       }
 
       function showToast(message, error = false) {
@@ -1242,7 +1281,9 @@
           goals: '<path d="M12 21V10"/><path d="M12 14c-5 0-8-3-8-7 5 0 8 2 8 7Z"/><path d="M12 10c5 0 8-3 8-7-5 0-8 2-8 7Z"/><path d="M6 21h12"/>',
           plan: '<path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
           save: '<path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/>',
-          open: '<path d="M3 19V6a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v10"/><path d="M8 13h8m-4-4v8"/>'
+          open: '<path d="M3 19V6a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v10"/><path d="M8 13h8m-4-4v8"/>',
+          more: '<path d="M12 5v14M5 12h14"/>',
+          reset: '<path d="M4 8V4h4"/><path d="M5.5 5.5A8 8 0 1 1 4 14"/>'
         };
         return '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths[name] + '</svg>';
       }
@@ -1353,10 +1394,7 @@
         const mobile = '<button class="mobile-nav-button' + (state.view === "overview" ? " active" : "") + '" type="button" data-view="overview">' + icon("overview") + '<span>Overview</span></button>' +
           '<button class="mobile-nav-button' + (state.view === "forecast" ? " active" : "") + '" type="button" data-view="forecast">' + icon("forecast") + '<span>Forecast</span></button>' +
           '<button class="mobile-nav-button' + (state.view === "lab" ? " active" : "") + '" type="button" data-view="lab">' + icon("lab") + '<span>Lab</span></button>' +
-          '<button class="mobile-nav-button' + (state.view === "goals" ? " active" : "") + '" type="button" data-view="goals">' + icon("goals") + '<span>Goals</span></button>' +
-          '<button class="mobile-nav-button' + (state.view === "plan" ? " active" : "") + '" type="button" data-view="plan">' + icon("plan") + '<span>Plan</span></button>' +
-          '<button class="mobile-nav-button" type="button" data-action="save-plan">' + icon("save") + '<span>Save</span></button>' +
-          '<button class="mobile-nav-button" type="button" data-action="open-plan">' + icon("open") + '<span>Open</span></button>';
+          '<details class="mobile-more"><summary class="mobile-nav-button' + (["goals", "plan"].includes(state.view) ? " active" : "") + '" aria-label="More navigation and plan actions">' + icon("more") + '<span>More</span></summary><div class="mobile-more-menu"><button class="mobile-more-action' + (state.view === "goals" ? " active" : "") + '" type="button" data-view="goals">' + icon("goals") + '<span>Goals</span></button><button class="mobile-more-action' + (state.view === "plan" ? " active" : "") + '" type="button" data-view="plan">' + icon("plan") + '<span>Money plan</span></button><button class="mobile-more-action" type="button" data-action="save-plan">' + icon("save") + '<span>Save Plan</span></button><button class="mobile-more-action" type="button" data-action="open-plan">' + icon("open") + '<span>Open Plan</span></button><button class="mobile-more-action" type="button" data-action="load-demo">' + icon("goals") + '<span>Load demo</span></button><button class="mobile-more-action danger" type="button" data-action="reset-plan">' + icon("reset") + '<span>Reset</span></button></div></details>';
         return '<div class="app-shell"><aside class="sidebar">' + brandMarkup(false) + '<p class="sidebar-note">Your plan</p><nav class="nav-stack" aria-label="Primary">' + nav + '</nav><div class="sidebar-actions"><button class="side-action" type="button" data-action="save-plan">Save Plan</button><button class="side-action" type="button" data-action="open-plan">Open Plan</button><button class="side-action" type="button" data-action="load-demo">Load fictional demo</button><button class="side-action" type="button" data-action="reset-plan">Reset</button></div><p class="file-feedback" data-file-feedback role="alert" aria-live="assertive"></p><p class="privacy-note">Stored on this device. No analytics or network requests.</p></aside><div class="main-shell"><main id="main-content">' + mainContent + '</main><p class="mobile-file-feedback" data-file-feedback role="alert" aria-live="assertive"></p><nav class="mobile-bar" aria-label="Mobile navigation">' + mobile + '</nav></div></div><span class="status-pill ' + (state.dirty ? "dirty" : "") + '" hidden aria-live="polite">' + dirtyText + '</span>';
       }
 
@@ -1982,7 +2020,7 @@
 
       function planMarkup() {
         const plan = state.plan;
-        return '<div class="page"><header class="page-header"><div><p class="eyebrow">Money plan</p><h1>Edit the details</h1><p class="lede">Changes recalculate forecasts immediately. Download a plan file when you want a separate copy.</p></div><div class="button-row"><span class="status-pill ' + (state.dirty ? "dirty" : "") + '">' + (state.dirty ? "Unsaved file changes" : "Plan file up to date") + '</span><button class="button primary" type="button" data-action="save-plan">Save Plan</button></div></header><div class="stack"><div class="grid plan-grid"><section class="card card-pad"><div class="section-head"><div><h2>Basics</h2><p>What is true at the start of your plan.</p></div></div><form id="plan-basics-form" class="form-grid" novalidate>' + fieldMarkup("nickname", "Nickname", "text", plan.nickname, { optional: true, maxlength: 60 }) + fieldMarkup("planningStartDate", "Planning start date", "date", plan.planningStartDate) + fieldMarkup("availableBalance", "Current available balance", "text", moneyInput(plan.availableBalanceCents), { hint: "Available now, before the first day’s transactions. Use a minus sign if overdrawn." }) + fieldMarkup("cushion", "Desired cash cushion", "text", moneyInput(plan.cushionCents)) + '<div class="field span-2"><button class="button secondary" type="submit">Update basics</button></div></form></section><div class="callout"><p><strong>Only your share enters the forecast.</strong></p><p>Shared-cost totals help with the split, but Bluegrass Bloom adds only your linked personal expense. Your cushion remains a comparison threshold.</p></div></div><div class="grid plan-grid"><section class="card card-pad"><div class="section-head"><div><h2>Income</h2><p>Expected take-home amounts; taxes are not estimated.</p></div><button class="button secondary" type="button" data-add="income">Add income</button></div><div id="income-list"></div></section><section class="card card-pad"><div class="section-head"><div><h2>Expenses</h2><p>Personal expenses plus linked shares from shared costs.</p></div><button class="button secondary" type="button" data-add="expense">Add expense</button></div><div id="expense-list"></div></section></div>' + sharedCostFormMarkup() + sharedCostsMarkup() + '<section class="card card-pad"><div class="section-head"><div><h2>Savings goals</h2><p>Manage up to three goals and planned transfers in their own view.</p></div><button class="button primary" type="button" data-view="goals">Open goals</button></div></section></div>' + footerMarkup() + '</div>';
+        return '<div class="page"><header class="page-header"><div><p class="eyebrow">Money plan</p><h1>Edit the details</h1><p class="lede">Changes recalculate forecasts immediately. Download a plan file when you want a separate copy.</p></div><div class="button-row"><span class="status-pill ' + (state.dirty ? "dirty" : "") + '">' + (state.dirty ? "Unsaved file changes" : "Plan file up to date") + '</span><button class="button primary" type="button" data-action="save-plan">Save Plan</button></div></header><div class="stack"><div class="grid plan-grid plan-top-grid"><div class="plan-share-note"><p><strong>Only your share enters the forecast.</strong> Shared totals are for splitting.</p></div><section class="card card-pad plan-basics"><div class="section-head"><div><h2>Basics</h2><p>What is true at the start of your plan.</p></div></div><form id="plan-basics-form" class="form-grid" novalidate>' + fieldMarkup("nickname", "Nickname", "text", plan.nickname, { optional: true, maxlength: 60 }) + fieldMarkup("planningStartDate", "Planning start date", "date", plan.planningStartDate) + fieldMarkup("availableBalance", "Current available balance", "text", moneyInput(plan.availableBalanceCents), { hint: "Available now, before the first day’s transactions. Use a minus sign if overdrawn." }) + fieldMarkup("cushion", "Desired cash cushion", "text", moneyInput(plan.cushionCents), { hint: "A comparison threshold, not an expense or money set aside automatically." }) + '<div class="field span-2"><button class="button secondary" type="submit">Update basics</button></div></form></section><section class="card card-pad plan-expenses"><div class="section-head"><div><h2>Expenses</h2><p>Personal expenses and linked shared-cost amounts.</p></div><button class="button secondary" type="button" data-add="expense">Add expense</button></div><div id="expense-list"></div></section></div><section class="card card-pad"><div class="section-head"><div><h2>Income</h2><p>Expected take-home amounts; taxes are not estimated.</p></div><button class="button secondary" type="button" data-add="income">Add income</button></div><div id="income-list"></div></section>' + sharedCostFormMarkup() + sharedCostsMarkup() + '<section class="card card-pad"><div class="section-head"><div><h2>Savings goals</h2><p>Manage up to three goals and planned transfers in their own view.</p></div><button class="button primary" type="button" data-view="goals">Open goals</button></div></section></div>' + footerMarkup() + '</div>';
       }
 
       function goalArt(index) {
@@ -2468,7 +2506,9 @@
           state.dirty = true;
           state.planDirty = true;
           state.scenarioDraft = null;
+          state.scenarioDraftBaseline = null;
           state.scenarioDraftDirty = false;
+          state.activeScenarioId = null;
           resetTransientEditors();
           saveLocal();
           render();
@@ -2498,26 +2538,13 @@
         }
         else if (action === "reset-plan") {
           if (!await requestDecision({ title: "Reset Bluegrass Bloom?", message: "This clears the current plan from this browser and returns to the welcome screen.", confirmLabel: "Reset plan", trigger })) return;
-          state.plan = null;
-          state.dirty = false;
-          state.planDirty = false;
-          state.scenarioDraft = null;
-          state.scenarioDraftDirty = false;
-          resetTransientEditors();
-          state.screen = "welcome";
-          state.view = "overview";
           try { localStorage.removeItem(STORAGE_KEY); } catch (_) { storageAvailable = false; }
+          resetSessionState();
           render();
         } else if (action === "cancel-onboarding") {
           if (!await confirmReplace("Canceling setup", trigger)) return;
-          state.plan = null;
-          state.dirty = false;
-          state.planDirty = false;
-          state.scenarioDraft = null;
-          state.scenarioDraftDirty = false;
-          resetTransientEditors();
-          state.screen = "welcome";
           try { localStorage.removeItem(STORAGE_KEY); } catch (_) { storageAvailable = false; }
+          resetSessionState();
           render();
         } else if (action === "onboard-next") {
           if (state.onboardingStep === 1 && !readBasics(document.getElementById("onboarding-form"))) return;
