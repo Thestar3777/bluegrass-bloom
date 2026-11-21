@@ -1,4 +1,9 @@
 <!doctype html>
+<!--
+  Bluegrass Bloom
+  Copyright (c) 2026 bluegrass-bloom
+  Released under the MIT License: https://opensource.org/licenses/MIT
+-->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -252,9 +257,14 @@
     .dialog-head h2 { margin: 0; }
     .dialog-close { width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; background: white; cursor: pointer; font-size: 1.3rem; line-height: 1; }
     .dialog-actions { margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px; }
+    .decision-dialog { width: min(470px, calc(100% - 28px)); }
+    .decision-copy { margin: 8px 0 0; color: var(--ink-soft); }
+    .decision-dialog .dialog-actions { padding-top: 4px; }
 
     .toast-region { position: fixed; z-index: 80; right: 22px; bottom: 22px; display: grid; gap: 9px; pointer-events: none; }
-    .toast { max-width: 390px; padding: 13px 17px; border-radius: 12px; background: var(--forest); color: white; box-shadow: var(--shadow); animation: toast-in .22s ease-out; }
+    .toast { max-width: 390px; padding: 13px 14px 13px 17px; border-radius: 12px; background: var(--forest); color: white; box-shadow: var(--shadow); animation: toast-in .22s ease-out; display: flex; align-items: flex-start; gap: 13px; pointer-events: auto; }
+    .toast span { flex: 1; }
+    .toast-dismiss { width: 28px; height: 28px; flex: 0 0 auto; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; background: transparent; color: white; cursor: pointer; line-height: 1; }
     .toast.error { background: var(--danger); }
     @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } }
 
@@ -263,6 +273,9 @@
     .status-pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border-radius: 999px; background: var(--sage-light); color: var(--forest-2); font-size: .8rem; font-weight: 720; }
     .status-pill.dirty { background: var(--peach-pale); color: #7b422d; }
     .file-input { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+    .file-feedback { min-height: 0; margin: 10px 2px 0; color: #ffd7cf; font-size: .78rem; }
+    .mobile-file-feedback { display: none; }
+    [data-file-feedback]:empty { display: none; }
 
     .forecast-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: flex-end; }
     .control-group { display: inline-flex; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper-strong); }
@@ -374,8 +387,33 @@
     .reflection { padding: 16px; border-radius: 14px; background: var(--peach-pale); }
     .reflection p { margin-bottom: 10px; font-weight: 720; }
     .draft-badge { display: inline-flex; padding: 4px 8px; border-radius: 999px; background: var(--peach-pale); color: #713925; font-size: .74rem; font-weight: 760; }
-    .goal-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+    .demo-lab .lab-toolbar, .demo-lab .lab-editor { display: none; }
+    .demo-lab .lab-layout { grid-template-columns: 1fr; }
+    .demo-lab .lab-results { position: static; }
+    .demo-story { margin-bottom: 22px; padding: 24px; border-color: var(--sage); background: var(--sage-pale); }
+    .demo-story-head { display: flex; justify-content: space-between; gap: 22px; align-items: flex-start; }
+    .demo-story-head p:last-child { margin-bottom: 0; color: var(--ink-soft); }
+    .demo-timeline { margin: 19px 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+    .demo-event { padding: 12px; border: 1px solid var(--line); border-radius: 13px; background: rgba(255,255,255,.82); }
+    .demo-event span { display: block; color: var(--ink-soft); font-size: .76rem; }
+    .demo-event strong { display: block; margin-top: 2px; }
+    .demo-story-sentence { margin: 0; padding: 13px 15px; border-radius: 12px; background: var(--forest); color: white; }
+    .shortfall-banner { margin: 18px 24px 0; padding: 15px 17px; display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; border: 1px solid #d9a59e; border-radius: 14px; background: var(--danger-pale); color: var(--danger); }
+    .shortfall-banner.clear { border-color: var(--line); background: var(--sage-pale); color: var(--forest-2); }
+    .shortfall-mark { width: 34px; height: 34px; display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-weight: 850; }
+    .shortfall-banner strong { display: block; font-size: 1.08rem; }
+    .shortfall-banner span:last-child { display: block; margin-top: 2px; font-size: .82rem; }
+    .goals-explainer { margin-bottom: 24px; }
+    .goals-explainer .forecast-note { margin-bottom: 10px; }
+    .goals-explainer .forecast-assumptions { background: var(--paper); }
+    .goal-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); align-items: start; margin-top: 24px; }
     .goal-card { padding: 23px; display: grid; gap: 16px; }
+    .goal-card-body { display: grid; gap: 16px; min-width: 0; }
+    .goal-card-primary, .goal-card-transfers { min-width: 0; }
+    .goal-card-primary { display: grid; gap: 16px; align-content: start; }
+    .goal-card-transfers { display: grid; gap: 13px; align-content: start; }
+    .goal-grid[data-count="1"] .goal-card-body { grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr); gap: 30px; }
+    .goal-grid[data-count="1"] .goal-card-transfers { padding-left: 28px; border-left: 1px solid var(--line); }
     .goal-card-head { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
     .goal-art { width: 54px; height: 54px; flex: 0 0 auto; }
     .goal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -415,7 +453,12 @@
       .lab-results { position: static; }
       .garden-card { position: static; }
       .mobile-bar { grid-template-columns: repeat(7, 1fr); }
-      .goal-grid { grid-template-columns: 1fr 1fr; }
+      .mobile-file-feedback { position: fixed; z-index: 29; right: 12px; bottom: 76px; left: 12px; display: block; padding: 9px 12px; border-radius: 10px; background: var(--danger); color: white; font-size: .78rem; box-shadow: var(--shadow-soft); }
+    }
+
+    @media (max-width: 760px) {
+      .goal-grid[data-count="1"] .goal-card-body { grid-template-columns: 1fr; gap: 20px; }
+      .goal-grid[data-count="1"] .goal-card-transfers { padding: 20px 0 0; border-left: 0; border-top: 1px solid var(--line); }
     }
 
     @media (max-width: 600px) {
@@ -467,6 +510,11 @@
       .scenario-form-actions { grid-column: auto; }
       .goal-grid, .goal-stats, .preview-metrics { grid-template-columns: 1fr; }
       .mobile-nav-button { font-size: .61rem; }
+      .demo-story-head { display: block; }
+      .demo-story-head .button { width: 100%; margin-top: 16px; }
+      .demo-timeline { grid-template-columns: 1fr 1fr; }
+      .shortfall-banner { margin-inline: 18px; }
+      .metric-row { grid-template-columns: minmax(0, 1fr) auto; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -497,12 +545,19 @@
     </form>
   </dialog>
 
+  <dialog id="decision-dialog" class="decision-dialog" aria-labelledby="decision-title" aria-describedby="decision-message">
+    <div class="dialog-body">
+      <p class="eyebrow">Please confirm</p>
+      <h2 id="decision-title">Confirm decision</h2>
+      <p id="decision-message" class="decision-copy"></p>
+      <div class="dialog-actions">
+        <button id="decision-cancel" class="button secondary" type="button">Cancel</button>
+        <button id="decision-confirm" class="button danger" type="button">Continue</button>
+      </div>
+    </div>
+  </dialog>
+
   <script>
-    /*
-      Bluegrass Bloom
-      Copyright (c) 2026 [YOUR NAME HERE]
-      Released under the MIT License: https://opensource.org/licenses/MIT
-    */
     (() => {
       "use strict";
 
@@ -534,12 +589,19 @@
         sharedEditorId: null
       };
       let storageAvailable = true;
+      let pendingDecision = null;
+      let lastOpenTrigger = null;
 
       const app = document.getElementById("app");
       const dialog = document.getElementById("entry-dialog");
       const entryForm = document.getElementById("entry-form");
       const fileInput = document.getElementById("file-input");
       const toastRegion = document.getElementById("toast-region");
+      const decisionDialog = document.getElementById("decision-dialog");
+      const decisionTitle = document.getElementById("decision-title");
+      const decisionMessage = document.getElementById("decision-message");
+      const decisionCancel = document.getElementById("decision-cancel");
+      const decisionConfirm = document.getElementById("decision-confirm");
 
       function createId(prefix) {
         return prefix + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -580,28 +642,27 @@
       function demoPlan(startDate = todayISO()) {
         const rentExpenseId = createId("exp");
         const rentSharedId = createId("shared");
-        const goalId = createId("goal");
+        const scenarioId = createId("scenario");
+        const purchaseChangeId = createId("change");
         return {
           schemaVersion: SCHEMA_VERSION,
-          nickname: "Jordan",
-          availableBalanceCents: 68425,
+          nickname: "Maya",
+          availableBalanceCents: 50000,
           planningStartDate: startDate,
-          cushionCents: 25000,
+          cushionCents: 5000,
           incomes: [
-            { id: createId("inc"), label: "Campus library shifts", amountCents: 23850, nextDate: addCalendarDays(startDate, 4), frequency: "biweekly", status: "confirmed" },
-            { id: createId("inc"), label: "Weekend café shifts", amountCents: 14600, nextDate: addCalendarDays(startDate, 9), frequency: "weekly", status: "estimated" }
+            { id: createId("inc"), label: "UK campus paycheck", amountCents: 30000, nextDate: addCalendarDays(startDate, 4), frequency: "one-time", status: "confirmed" }
           ],
           expenses: [
-            { id: rentExpenseId, label: "My share of rent", amountCents: 47500, nextDate: addCalendarDays(startDate, 11), frequency: "monthly", category: "Housing", sharedCostId: rentSharedId },
-            { id: createId("exp"), label: "Groceries", amountCents: 6200, nextDate: addCalendarDays(startDate, 3), frequency: "weekly", category: "Groceries" },
-            { id: createId("exp"), label: "Bus pass", amountCents: 3000, nextDate: addCalendarDays(startDate, 15), frequency: "monthly", category: "Transportation" }
+            { id: rentExpenseId, label: "My share of rent", amountCents: 45000, nextDate: addCalendarDays(startDate, 1), frequency: "one-time", category: "Housing", sharedCostId: rentSharedId }
           ],
           savingsGoal: null,
-          goals: [{ id: goalId, name: "Emergency buffer", targetCents: 60000, savedCents: 18500, targetDate: null, contributions: [{ id: createId("contribution"), label: "Emergency buffer transfer", amountCents: 2500, nextDate: addCalendarDays(startDate, 7), frequency: "biweekly" }] }],
-          sharedCosts: [{ id: rentSharedId, label: "Apartment rent", totalCents: 95000, nextDate: addCalendarDays(startDate, 11), frequency: "monthly", category: "Housing", splitMode: "equal", people: 2, shareCents: 47500, linkedExpenseId: rentExpenseId }],
-          scenarios: [],
+          goals: [],
+          sharedCosts: [{ id: rentSharedId, label: "Apartment rent", totalCents: 90000, nextDate: addCalendarDays(startDate, 1), frequency: "one-time", category: "Housing", splitMode: "equal", people: 2, shareCents: 45000, linkedExpenseId: rentExpenseId }],
+          scenarios: [{ id: scenarioId, name: "$75 purchase before rent", reflection: "flexible", changes: [{ id: purchaseChangeId, type: "purchase", description: "Proposed purchase", amountCents: 7500, date: startDate }], updatedAt: new Date().toISOString() }],
           updatedAt: new Date().toISOString(),
-          demo: true
+          demo: true,
+          demoStory: "fictional-uk-student-purchase"
         };
       }
 
@@ -1082,10 +1143,16 @@
         }
       }
 
-      function markDirty() {
+      function markDirty(preserveDemo = false) {
         state.planDirty = true;
         state.dirty = true;
-        if (state.plan) state.plan.updatedAt = new Date().toISOString();
+        if (state.plan) {
+          if (!preserveDemo) {
+            delete state.plan.demoStory;
+            state.plan.demo = false;
+          }
+          state.plan.updatedAt = new Date().toISOString();
+        }
         saveLocal();
       }
 
@@ -1101,8 +1168,9 @@
         saveLocal();
       }
 
-      function confirmReplace(action) {
-        return !state.dirty || window.confirm("You have changes that have not been saved to a plan file. " + action + " will replace them. Continue?");
+      async function confirmReplace(action, trigger = null) {
+        if (!state.dirty) return true;
+        return requestDecision({ title: "Replace unsaved work?", message: "You have changes that have not been saved to a plan file. " + action + " will replace them.", confirmLabel: "Replace", trigger });
       }
 
       function resetTransientEditors() {
@@ -1116,9 +1184,47 @@
       function showToast(message, error = false) {
         const toast = document.createElement("div");
         toast.className = "toast" + (error ? " error" : "");
-        toast.textContent = message;
+        toast.setAttribute("role", error ? "alert" : "status");
+        const copy = document.createElement("span");
+        copy.textContent = message;
+        const dismiss = document.createElement("button");
+        dismiss.type = "button";
+        dismiss.className = "toast-dismiss";
+        dismiss.setAttribute("aria-label", "Dismiss notification");
+        dismiss.textContent = "×";
+        dismiss.addEventListener("click", () => toast.remove());
+        toast.append(copy, dismiss);
         toastRegion.appendChild(toast);
         window.setTimeout(() => toast.remove(), 4200);
+      }
+
+      function showFileFeedback(message) {
+        document.querySelectorAll("[data-file-feedback]").forEach(node => { node.textContent = message; });
+      }
+
+      function clearFileFeedback() {
+        showFileFeedback("");
+      }
+
+      function settleDecision(confirmed) {
+        if (!pendingDecision) return;
+        const { resolve, returnFocus } = pendingDecision;
+        pendingDecision = null;
+        if (decisionDialog.open) decisionDialog.close();
+        resolve(confirmed);
+        if (!confirmed && returnFocus && typeof returnFocus.focus === "function" && document.contains(returnFocus)) window.setTimeout(() => returnFocus.focus(), 0);
+      }
+
+      function requestDecision({ title, message, confirmLabel = "Continue", trigger = null }) {
+        if (pendingDecision) settleDecision(false);
+        decisionTitle.textContent = title;
+        decisionMessage.textContent = message;
+        decisionConfirm.textContent = confirmLabel;
+        return new Promise(resolve => {
+          pendingDecision = { resolve, returnFocus: trigger || document.activeElement };
+          decisionDialog.showModal();
+          window.setTimeout(() => decisionCancel.focus(), 0);
+        });
       }
 
       function el(tag, className, text) {
@@ -1150,14 +1256,14 @@
       }
 
       function renderWelcome() {
-        app.innerHTML = '<main class="welcome" id="main-content"><section class="welcome-copy">' + brandMarkup(true) + '<p class="eyebrow">A personal money plan, kept on your device</p><h1>Make room for what matters.</h1><p class="welcome-lede">Plan around your paydays, understand your choices, and grow your confidence with money.</p><div class="button-row"><button class="button primary" type="button" data-action="create-plan">Create my plan</button><button class="button secondary" type="button" data-action="load-demo">Explore a sample</button></div><p class="welcome-fine">No account, bank connection, or personal identifying information. Your plan stays in this browser unless you download it.</p></section><aside class="welcome-art">' + welcomeArt() + '<span class="art-caption">Kentucky · Made for learning</span></aside></main>';
+        app.innerHTML = '<main class="welcome" id="main-content"><section class="welcome-copy">' + brandMarkup(true) + '<p class="eyebrow">A personal money plan, kept on your device</p><h1>Make room for what matters.</h1><p class="welcome-lede">Plan around your paydays, understand your choices, and grow your confidence with money.</p><div class="button-row"><button class="button primary" type="button" data-action="load-demo">Try the student demo</button><button class="button secondary" type="button" data-action="create-plan">Create my plan</button></div><p class="welcome-fine">The demo is fictional. No account, bank connection, or personal identifying information is needed.</p></section><aside class="welcome-art">' + welcomeArt() + '<span class="art-caption">Kentucky · Made for learning</span></aside></main>';
       }
 
       function fieldMarkup(id, label, type, value, options = {}) {
         const optional = options.optional ? ' <span class="optional">(optional)</span>' : "";
         const attrs = [options.min !== undefined ? 'min="' + options.min + '"' : "", options.maxlength ? 'maxlength="' + options.maxlength + '"' : "", options.step ? 'step="' + options.step + '"' : "", options.placeholder ? 'placeholder="' + options.placeholder + '"' : ""].filter(Boolean).join(" ");
         const input = type === "select" ? '<select id="' + id + '" name="' + id + '">' + options.choices.map(choice => '<option value="' + escapeText(choice) + '"' + (choice === value ? " selected" : "") + '>' + escapeText(options.labels && options.labels[choice] ? options.labels[choice] : titleCase(choice)) + '</option>').join("") + '</select>' : '<input id="' + id + '" name="' + id + '" type="' + type + '" value="' + String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;") + '" ' + attrs + '>';
-        return '<div class="field' + (options.span ? " span-2" : "") + '"><label for="' + id + '">' + label + optional + '</label>' + input + (options.hint ? '<p class="field-hint">' + options.hint + '</p>' : "") + '<p class="field-error" id="' + id + '-error"></p></div>';
+        return '<div' + (options.wrapperId ? ' id="' + options.wrapperId + '"' : '') + ' class="field' + (options.span ? " span-2" : "") + '"' + (options.hidden ? ' hidden' : '') + '><label for="' + id + '">' + label + optional + '</label>' + input + (options.hint ? '<p class="field-hint">' + options.hint + '</p>' : "") + '<p class="field-error" id="' + id + '-error"></p></div>';
       }
 
       function renderOnboarding() {
@@ -1251,7 +1357,7 @@
           '<button class="mobile-nav-button' + (state.view === "plan" ? " active" : "") + '" type="button" data-view="plan">' + icon("plan") + '<span>Plan</span></button>' +
           '<button class="mobile-nav-button" type="button" data-action="save-plan">' + icon("save") + '<span>Save</span></button>' +
           '<button class="mobile-nav-button" type="button" data-action="open-plan">' + icon("open") + '<span>Open</span></button>';
-        return '<div class="app-shell"><aside class="sidebar">' + brandMarkup(false) + '<p class="sidebar-note">Your plan</p><nav class="nav-stack" aria-label="Primary">' + nav + '</nav><div class="sidebar-actions"><button class="side-action" type="button" data-action="save-plan">Save Plan</button><button class="side-action" type="button" data-action="open-plan">Open Plan</button><button class="side-action" type="button" data-action="load-demo">Load fictional demo</button><button class="side-action" type="button" data-action="reset-plan">Reset</button></div><p class="privacy-note">Stored on this device. No analytics or network requests.</p></aside><div class="main-shell"><main id="main-content">' + mainContent + '</main><nav class="mobile-bar" aria-label="Mobile navigation">' + mobile + '</nav></div></div><span class="status-pill ' + (state.dirty ? "dirty" : "") + '" hidden aria-live="polite">' + dirtyText + '</span>';
+        return '<div class="app-shell"><aside class="sidebar">' + brandMarkup(false) + '<p class="sidebar-note">Your plan</p><nav class="nav-stack" aria-label="Primary">' + nav + '</nav><div class="sidebar-actions"><button class="side-action" type="button" data-action="save-plan">Save Plan</button><button class="side-action" type="button" data-action="open-plan">Open Plan</button><button class="side-action" type="button" data-action="load-demo">Load fictional demo</button><button class="side-action" type="button" data-action="reset-plan">Reset</button></div><p class="file-feedback" data-file-feedback role="alert" aria-live="assertive"></p><p class="privacy-note">Stored on this device. No analytics or network requests.</p></aside><div class="main-shell"><main id="main-content">' + mainContent + '</main><p class="mobile-file-feedback" data-file-feedback role="alert" aria-live="assertive"></p><nav class="mobile-bar" aria-label="Mobile navigation">' + mobile + '</nav></div></div><span class="status-pill ' + (state.dirty ? "dirty" : "") + '" hidden aria-live="polite">' + dirtyText + '</span>';
       }
 
       function overviewMarkup() {
@@ -1495,10 +1601,11 @@
           else if (scenario.firstBelowCushion.date !== baseline.firstBelowCushion.date) statements.push("The cushion breach moves from " + formatDate(baseline.firstBelowCushion.date) + " to " + formatDate(scenario.firstBelowCushion.date) + ".");
           else statements.push("The plan already falls below its cushion on " + formatDate(baseline.firstBelowCushion.date) + "; this decision does not change that first date.");
         } else if (baseline.firstBelowCushion) statements.push("The current plan falls below its cushion, while this scenario does not within the selected period.");
-        const negativeDifference = scenario.daysBelowZero - baseline.daysBelowZero;
-        if (negativeDifference > 0) statements.push("This decision creates " + negativeDifference + " additional day" + (negativeDifference === 1 ? "" : "s") + " below zero.");
-        else if (negativeDifference < 0) statements.push("This decision results in " + Math.abs(negativeDifference) + " fewer day" + (negativeDifference === -1 ? "" : "s") + " below zero.");
-        else if (baseline.daysBelowZero > 0) statements.push("The baseline already has " + baseline.daysBelowZero + " day" + (baseline.daysBelowZero === 1 ? "" : "s") + " below zero, and this decision does not change that count.");
+        const baselineBelowZero = baseline.lowest.balanceCents < 0;
+        const scenarioBelowZero = scenario.lowest.balanceCents < 0;
+        if (scenarioBelowZero && !baselineBelowZero) statements.push("This decision creates a shortfall, reaching " + formatMoney(scenario.lowest.balanceCents) + ".");
+        else if (!scenarioBelowZero && baselineBelowZero) statements.push("The current plan falls below zero, while this scenario stays at or above zero.");
+        else if (scenarioBelowZero && baselineBelowZero) statements.push("Both versions fall below zero: the current plan reaches " + formatMoney(baseline.lowest.balanceCents) + " and this scenario reaches " + formatMoney(scenario.lowest.balanceCents) + ".");
         else statements.push("Neither version falls below zero within this forecast.");
         const contributionChanges = state.scenarioDraft.changes.filter(change => change.type === "contribution-change");
         contributionChanges.forEach(change => {
@@ -1534,6 +1641,58 @@
           return '<tr><td>' + formatDate(day.date) + '</td><td>' + formatMoney(day.closingBalanceCents) + '</td><td>' + formatMoney(scenarioDay.closingBalanceCents) + '</td><td class="' + (difference < 0 ? "negative" : "") + '">' + (difference > 0 ? "+" : "") + formatMoney(difference) + '</td></tr>';
         }).join("");
         return '<details class="daily-details"><summary>View accessible comparison table</summary><div class="table-wrap"><table class="balance-table"><caption class="sr-only">Daily current-plan and scenario closing balances</caption><thead><tr><th scope="col">Date</th><th scope="col">Current plan</th><th scope="col">With decision</th><th scope="col">Difference</th></tr></thead><tbody>' + rows + '</tbody></table></div></details>';
+      }
+
+      function shortfallAlertMarkup(comparison) {
+        const goesBelowZero = comparison.scenario.lowest.balanceCents < 0;
+        if (!goesBelowZero) return '<div class="shortfall-banner clear" role="status"><span class="shortfall-mark" aria-hidden="true">✓</span><div><strong>No projected shortfall</strong><span>The lowest scenario balance is ' + formatMoney(comparison.scenario.lowest.balanceCents) + ' on ' + formatDate(comparison.scenario.lowest.date) + '.</span></div></div>';
+        const shortfall = comparison.scenario.firstBelowZero || comparison.scenario.lowest;
+        return '<div class="shortfall-banner" role="alert"><span class="shortfall-mark" aria-hidden="true">!</span><div><strong>First shortfall: ' + formatMoney(Math.abs(shortfall.balanceCents)) + ' below zero</strong><span>' + formatDate(shortfall.date) + ' · projected closing balance ' + formatMoney(shortfall.balanceCents) + '</span></div></div>';
+      }
+
+      function demoStoryMarkup() {
+        const startDate = state.plan.planningStartDate;
+        const rentEntry = state.plan.expenses.find(entry => entry.category === "Housing");
+        const paycheckEntry = state.plan.incomes.find(entry => entry.status === "confirmed");
+        if (!rentEntry || !paycheckEntry) return "";
+        const rentDate = rentEntry.nextDate;
+        const paydayDate = paycheckEntry.nextDate;
+        const earlyScenario = clonePlan(state.scenarioDraft);
+        const paydayScenario = clonePlan(state.scenarioDraft);
+        const earlyPurchase = earlyScenario.changes.find(change => change.type === "purchase");
+        const paydayPurchase = paydayScenario.changes.find(change => change.type === "purchase");
+        if (!earlyPurchase || !paydayPurchase) return "";
+        earlyPurchase.date = startDate;
+        paydayPurchase.date = paydayDate;
+        const early = calculateScenarioComparison(state.plan, state.forecastHorizon, state.forecastIncomeMode, earlyScenario).scenario;
+        const payday = calculateScenarioComparison(state.plan, state.forecastHorizon, state.forecastIncomeMode, paydayScenario).scenario;
+        const isPayday = state.scenarioDraft.changes.find(change => change.type === "purchase").date === paydayDate;
+        const earlyBelowZero = early.lowest.balanceCents < 0;
+        const paydayBelowZero = payday.lowest.balanceCents < 0;
+        const endingCopy = early.endingBalanceCents === payday.endingBalanceCents ? 'Both purchase dates lead to the same ' + formatMoney(payday.endingBalanceCents) + ' ending balance. ' : 'The earlier purchase ends at ' + formatMoney(early.endingBalanceCents) + ', while the payday purchase ends at ' + formatMoney(payday.endingBalanceCents) + '. ';
+        let timingCopy = "Neither purchase date creates a shortfall.";
+        if (earlyBelowZero && !paydayBelowZero) timingCopy = 'Only the earlier purchase creates a ' + formatMoney(Math.abs(early.lowest.balanceCents)) + ' shortfall.';
+        else if (earlyBelowZero && paydayBelowZero) timingCopy = 'Both dates create shortfalls: ' + formatMoney(Math.abs(early.lowest.balanceCents)) + ' when bought earlier and ' + formatMoney(Math.abs(payday.lowest.balanceCents)) + ' on payday.';
+        else if (!earlyBelowZero && paydayBelowZero) timingCopy = 'Only the payday purchase creates a ' + formatMoney(Math.abs(payday.lowest.balanceCents)) + ' shortfall.';
+        const resultSentence = endingCopy + timingCopy;
+        return '<section class="card demo-story" aria-labelledby="demo-story-title"><div class="demo-story-head"><div><p class="eyebrow">Fictional University of Kentucky student</p><h2 id="demo-story-title">Can Maya buy this before rent?</h2><p>Compare the same ' + formatMoney(earlyPurchase.amountCents) + ' purchase before rent and after the campus paycheck arrives.</p></div><button class="button primary" type="button" data-demo-payday' + (isPayday ? ' disabled' : '') + '>' + (isPayday ? 'Purchase moved to payday' : 'Try buying on payday') + '</button></div><div class="demo-timeline" aria-label="Demo timeline"><div class="demo-event"><span>Starting cash</span><strong>' + formatMoney(state.plan.availableBalanceCents) + '</strong></div><div class="demo-event"><span>Day 1 · purchase</span><strong>−' + formatMoney(earlyPurchase.amountCents) + '</strong></div><div class="demo-event"><span>' + formatDate(rentDate) + ' · rent share</span><strong>−' + formatMoney(rentEntry.amountCents) + '</strong></div><div class="demo-event"><span>' + formatDate(paydayDate) + ' · confirmed pay</span><strong>+' + formatMoney(paycheckEntry.amountCents) + '</strong></div></div><p class="demo-story-sentence">' + resultSentence + '</p></section>';
+      }
+
+      function moveDemoPurchaseToPayday() {
+        if (!state.plan || state.plan.demoStory !== "fictional-uk-student-purchase" || !state.scenarioDraft) return;
+        const purchase = state.scenarioDraft.changes.find(change => change.type === "purchase");
+        if (!purchase) return;
+        const paycheck = state.plan.incomes.find(entry => entry.status === "confirmed");
+        if (!paycheck) return;
+        purchase.date = paycheck.nextDate;
+        state.scenarioDraft.updatedAt = new Date().toISOString();
+        const savedIndex = state.plan.scenarios.findIndex(scenario => scenario.id === state.scenarioDraft.id);
+        if (savedIndex >= 0) state.plan.scenarios[savedIndex] = clonePlan(state.scenarioDraft);
+        state.scenarioDraftBaseline = clonePlan(state.scenarioDraft);
+        state.scenarioDraftDirty = false;
+        markDirty(true);
+        render();
+        showToast("Purchase moved to payday. The baseline money plan is unchanged.");
       }
 
       function labMarkup() {
@@ -1627,6 +1786,21 @@
           comparison.issues.forEach(issue => wrap.append(el("div", "issue " + (issue.level === "error" ? "error" : ""), (issue.level === "error" ? "⚠ " : "ℹ ") + issue.message)));
           issueContainer.replaceChildren(wrap);
         } else issueContainer.replaceChildren();
+      }
+
+      function decorateLabResults() {
+        const page = document.querySelector(".lab-page");
+        const comparisonHead = document.querySelector(".comparison-head");
+        if (!page || !comparisonHead || !state.scenarioDraft) return;
+        const comparison = calculateScenarioComparison(state.plan, state.forecastHorizon, state.forecastIncomeMode, state.scenarioDraft);
+        const heading = page.querySelector("h1");
+        if (heading) heading.textContent = "Compare your options.";
+        comparisonHead.insertAdjacentHTML("afterend", shortfallAlertMarkup(comparison));
+        if (state.plan.demoStory === "fictional-uk-student-purchase") {
+          page.classList.add("demo-lab");
+          const header = page.querySelector(".page-header");
+          if (header) header.insertAdjacentHTML("afterend", demoStoryMarkup());
+        }
       }
 
       function syncScenarioDraftDirty() {
@@ -1794,7 +1968,7 @@
         const expenseChoices = [""].concat(state.plan.expenses.filter(expense => !expense.sharedCostId || expense.sharedCostId === value.id).map(expense => expense.id));
         const expenseLabels = { "": "Do not convert an existing expense" };
         state.plan.expenses.forEach(expense => expenseLabels[expense.id] = expense.label + " · " + formatMoney(expense.amountCents));
-        return '<section class="card card-pad"><div class="section-head"><div><h2>' + (item ? "Edit shared cost" : "Add shared cost") + '</h2><p>Record the household total, then choose how your own share is calculated.</p></div></div><form id="shared-form" class="form-grid" novalidate>' + fieldMarkup("sharedLabel", "Household bill", "text", value.label, { maxlength: 80, span: true, placeholder: "For example, apartment rent" }) + fieldMarkup("sharedTotal", "Household total", "text", item ? moneyInput(value.totalCents) : "", { placeholder: "0.00" }) + fieldMarkup("sharedDate", "Next date", "date", value.nextDate) + fieldMarkup("sharedFrequency", "Frequency", "select", value.frequency, { choices: frequencies }) + fieldMarkup("sharedCategory", "Category", "select", value.category, { choices: expenseCategories, labels: Object.fromEntries(expenseCategories.map(category => [category, category])) }) + fieldMarkup("sharedMode", "Split method", "select", value.splitMode, { choices: ["equal", "custom"], labels: { equal: "Equal split", custom: "Custom own share" } }) + fieldMarkup("sharedPeople", "People sharing, including you", "number", value.people, { min: 2, step: "1" }) + fieldMarkup("sharedShare", "Your custom share", "text", value.splitMode === "custom" ? moneyInput(value.shareCents) : "", { optional: true, placeholder: "0.00", hint: "Used only for a custom split." }) + fieldMarkup("sharedConvert", "Convert an existing personal expense", "select", value.linkedExpenseId || "", { choices: expenseChoices, labels: expenseLabels, span: true, optional: true, hint: "Selecting one updates that expense instead of creating a duplicate." }) + '<div class="field span-2"><div class="button-row"><button class="button primary" type="submit">' + (item ? "Update shared cost" : "Save shared cost") + '</button><button class="button secondary" type="button" data-shared-cancel>Cancel</button></div></div></form></section>';
+        return '<section class="card card-pad"><div class="section-head"><div><h2>' + (item ? "Edit shared cost" : "Add shared cost") + '</h2><p>Record the household total, then choose how your own share is calculated.</p></div></div><form id="shared-form" class="form-grid" novalidate>' + fieldMarkup("sharedLabel", "Household bill", "text", value.label, { maxlength: 80, span: true, placeholder: "For example, apartment rent" }) + fieldMarkup("sharedTotal", "Household total", "text", item ? moneyInput(value.totalCents) : "", { placeholder: "0.00" }) + fieldMarkup("sharedDate", "Next date", "date", value.nextDate) + fieldMarkup("sharedFrequency", "Frequency", "select", value.frequency, { choices: frequencies }) + fieldMarkup("sharedCategory", "Category", "select", value.category, { choices: expenseCategories, labels: Object.fromEntries(expenseCategories.map(category => [category, category])) }) + fieldMarkup("sharedMode", "Split method", "select", value.splitMode, { choices: ["equal", "custom"], labels: { equal: "Equal split", custom: "Custom own share" } }) + fieldMarkup("sharedPeople", "People sharing, including you", "number", value.people, { min: 2, step: "1", wrapperId: "sharedPeopleField", hidden: value.splitMode !== "equal" }) + fieldMarkup("sharedShare", "Your custom share", "text", value.splitMode === "custom" ? moneyInput(value.shareCents) : "", { placeholder: "0.00", wrapperId: "sharedShareField", hidden: value.splitMode !== "custom" }) + fieldMarkup("sharedConvert", "Convert an existing personal expense", "select", value.linkedExpenseId || "", { choices: expenseChoices, labels: expenseLabels, span: true, optional: true, hint: "Selecting one updates that expense instead of creating a duplicate." }) + '<div class="field span-2"><div class="button-row"><button class="button primary" type="submit">' + (item ? "Update shared cost" : "Save shared cost") + '</button><button class="button secondary" type="button" data-shared-cancel>Cancel</button></div></div></form></section>';
       }
 
       function sharedCostsMarkup() {
@@ -1859,14 +2033,17 @@
           const actualPercent = Math.min(100, Math.round(goal.savedCents / goal.targetCents * 100));
           const contributions = goal.contributions.map(entry => '<li class="contribution-row"><div class="row-between"><div><strong>' + escapeText(entry.label) + '</strong><div class="entry-meta">' + formatDate(entry.nextDate) + ' · ' + titleCase(entry.frequency) + '</div></div><strong>' + formatMoney(entry.amountCents) + '</strong></div><div class="compact-actions"><button class="button secondary" type="button" data-contribution-edit="' + escapeText(goal.id) + '|' + escapeText(entry.id) + '">Edit</button><button class="button danger" type="button" data-contribution-delete="' + escapeText(goal.id) + '|' + escapeText(entry.id) + '">Delete</button></div></li>').join("");
           const reached = projection.reachedDate ? 'Reaches target on ' + formatDate(projection.reachedDate) : 'Not reached within this forecast';
-          return '<article class="card goal-card"><div class="goal-card-head"><div><p class="eyebrow">Goal ' + (index + 1) + '</p><h2>' + escapeText(goal.name) + '</h2><p class="entry-meta">Target ' + formatMoney(goal.targetCents) + (goal.targetDate ? ' by ' + formatDate(goal.targetDate) : '') + '</p></div>' + goalArt(index) + '</div><div><div class="goal-top"><span>Actual progress</span><strong>' + actualPercent + '%</strong></div><div class="progress-track" role="progressbar" aria-label="' + escapeText(goal.name) + ' actual savings progress" aria-valuenow="' + actualPercent + '" aria-valuemin="0" aria-valuemax="100"><div class="progress-fill" style="width:' + actualPercent + '%"></div></div></div><div class="goal-stats"><div class="goal-stat"><span>Actually saved</span><strong>' + formatMoney(projection.actualCents) + '</strong></div><div class="goal-stat"><span>Projected by forecast end</span><strong>' + formatMoney(projection.projectedCents) + '</strong></div><div class="goal-stat"><span>Projected remaining</span><strong>' + formatMoney(projection.remainingCents) + '</strong></div><div class="goal-stat"><span>Within this horizon</span><strong>' + reached + '</strong></div></div><p class="field-hint">Actually saved remains outside available cash. Planned transfers reduce the cash forecast and raise only the projected goal total.</p><div class="compact-actions"><button class="button primary" type="button" data-contribution-new="' + escapeText(goal.id) + '">Plan contribution</button><button class="button secondary" type="button" data-goal-edit="' + escapeText(goal.id) + '">Edit goal</button><button class="button danger" type="button" data-goal-delete="' + escapeText(goal.id) + '">Delete</button></div><div><h3>Planned transfers</h3>' + (contributions ? '<ul class="contribution-list">' + contributions + '</ul>' : '<div class="empty-state"><strong>No contribution schedule</strong><span>Actual savings is unchanged until you update it yourself.</span></div>') + '</div></article>';
+          const primary = '<div class="goal-card-primary"><div class="goal-card-head"><div><p class="eyebrow">Goal ' + (index + 1) + '</p><h2>' + escapeText(goal.name) + '</h2><p class="entry-meta">Target ' + formatMoney(goal.targetCents) + (goal.targetDate ? ' by ' + formatDate(goal.targetDate) : '') + '</p></div>' + goalArt(index) + '</div><div><div class="goal-top"><span>Actual progress</span><strong>' + actualPercent + '%</strong></div><div class="progress-track" role="progressbar" aria-label="' + escapeText(goal.name) + ' actual savings progress" aria-valuenow="' + actualPercent + '" aria-valuemin="0" aria-valuemax="100"><div class="progress-fill" style="width:' + actualPercent + '%"></div></div></div><div class="goal-stats"><div class="goal-stat"><span>Actually saved</span><strong>' + formatMoney(projection.actualCents) + '</strong></div><div class="goal-stat"><span>Projected by forecast end</span><strong>' + formatMoney(projection.projectedCents) + '</strong></div><div class="goal-stat"><span>Projected remaining</span><strong>' + formatMoney(projection.remainingCents) + '</strong></div><div class="goal-stat"><span>Within this horizon</span><strong>' + reached + '</strong></div></div></div>';
+          const transfers = '<div class="goal-card-transfers"><div><h3>Planned transfers</h3><p class="field-hint">Transfers reduce projected cash and raise only the projected goal total.</p></div>' + (contributions ? '<ul class="contribution-list">' + contributions + '</ul>' : '<div class="empty-state"><strong>No contribution schedule</strong><span>Actual savings is unchanged until you update it yourself.</span></div>') + '<div class="compact-actions"><button class="button primary" type="button" data-contribution-new="' + escapeText(goal.id) + '">Plan contribution</button><button class="button secondary" type="button" data-goal-edit="' + escapeText(goal.id) + '">Edit goal</button><button class="button danger" type="button" data-goal-delete="' + escapeText(goal.id) + '">Delete</button></div></div>';
+          return '<article class="card goal-card"><div class="goal-card-body">' + primary + transfers + '</div></article>';
         }).join("");
         const empty = '<div class="empty-state"><strong>No savings goals yet</strong><span>Create a goal to compare actual savings with planned future contributions.</span><button class="button primary" type="button" data-goal-new>Create my first goal</button></div>';
-        return '<div class="page"><header class="page-header"><div><p class="eyebrow">Savings goals · through ' + formatDate(forecast.endDate) + '</p><h1>Grow toward something specific.</h1><p class="lede">Keep money already saved separate from future transfers and available cash.</p></div><div class="button-row"><div class="control-group" aria-label="Goal projection length">' + [30,60,90].map(days => '<button class="control-button' + (state.forecastHorizon === days ? ' active' : '') + '" type="button" data-horizon="' + days + '">' + days + ' days</button>').join('') + '</div>' + (state.plan.goals.length < 3 ? '<button class="button primary" type="button" data-goal-new>Add goal</button>' : '') + '</div></header><div class="forecast-note"><span class="forecast-note-icon" aria-hidden="true">i</span><div><strong>Actual and projected are different.</strong> Already-saved money stays outside your available balance. A planned contribution is a transfer: it lowers projected cash once and increases projected goal savings once. Your cash cushion remains a threshold, not a savings transfer.</div></div>' + goalEditorMarkup() + contributionEditorMarkup() + contributionPreviewMarkup() + (cards ? '<section class="grid goal-grid" aria-label="Savings goals">' + cards + '</section>' : empty) + footerMarkup() + '</div>';
+        const explanation = '<div class="goals-explainer"><div class="forecast-note"><span class="forecast-note-icon" aria-hidden="true">i</span><div><strong>Already-saved money stays outside available cash; planned contributions update projected cash and goal savings.</strong></div></div><details class="forecast-assumptions"><summary>How savings projections work</summary><div>Actually saved is the amount you entered as already held outside your spending balance. Each planned contribution is counted once as a transfer: it reduces the available-cash forecast on its date and increases projected savings for its goal. The cash cushion remains a comparison threshold, and achievement dates are never extrapolated beyond the selected forecast.</div></details></div>';
+        return '<div class="page"><header class="page-header"><div><p class="eyebrow">Savings goals · through ' + formatDate(forecast.endDate) + '</p><h1>Grow toward something specific.</h1><p class="lede">Keep money already saved separate from future transfers and available cash.</p></div><div class="button-row"><div class="control-group" aria-label="Goal projection length">' + [30,60,90].map(days => '<button class="control-button' + (state.forecastHorizon === days ? ' active' : '') + '" type="button" data-horizon="' + days + '">' + days + ' days</button>').join('') + '</div>' + (state.plan.goals.length < 3 ? '<button class="button primary" type="button" data-goal-new>Add goal</button>' : '') + '</div></header>' + explanation + goalEditorMarkup() + contributionEditorMarkup() + contributionPreviewMarkup() + (cards ? '<section class="grid goal-grid" data-count="' + state.plan.goals.length + '" aria-label="Savings goals">' + cards + '</section>' : '<div class="goal-grid">' + empty + '</div>') + footerMarkup() + '</div>';
       }
 
       function footerMarkup() {
-        return '<footer class="footer"><p><strong>Educational use only.</strong> Bluegrass Bloom provides general planning tools, not financial, legal, tax, or investment advice. Verify important decisions with a qualified professional.</p><p>Privacy: your data stays on this device unless you download a plan file. No analytics, accounts, or bank connections.</p><p>Bluegrass Bloom · Copyright © 2026 <strong>[YOUR NAME HERE]</strong> · MIT License</p></footer>';
+        return '<footer class="footer"><p><strong>Educational use only.</strong> Bluegrass Bloom provides general planning tools, not financial, legal, tax, or investment advice. Verify important decisions with a qualified professional.</p><p>Privacy: your data stays on this device unless you download a plan file. No analytics, accounts, or bank connections.</p><p>Bluegrass Bloom · Copyright © 2026 <strong>bluegrass-bloom</strong> · MIT License</p></footer>';
       }
 
       function escapeText(value) {
@@ -1926,6 +2103,7 @@
           setupForecastChart();
         }
         if (state.view === "lab") {
+          decorateLabResults();
           renderScenarioChanges();
           setupLabChart();
           if (state.scenarioEditingChangeId) {
@@ -2025,7 +2203,7 @@
         let valid = true;
         if (!label) { showFieldError("entryLabel", "Add a short label."); valid = false; }
         if (label.length > 80) { showFieldError("entryLabel", "Use 80 characters or fewer."); valid = false; }
-        if (amount === null) { showFieldError("entryAmount", "Enter a non-negative amount with up to two decimal places."); valid = false; }
+        if (amount === null || amount <= 0) { showFieldError("entryAmount", "Enter an amount greater than zero with up to two decimal places."); valid = false; }
         if (!validCalendarDate(form.elements.entryDate.value)) { showFieldError("entryDate", "Choose a valid calendar date."); valid = false; }
         if (!valid) return;
         const data = { label, amountCents: amount, nextDate: form.elements.entryDate.value, frequency: form.elements.entryFrequency.value };
@@ -2044,10 +2222,10 @@
         showToast((state.entryEditor.id ? "Updated " : "Added ") + type + " entry.");
       }
 
-      function deleteEntry(type, id) {
+      async function deleteEntry(type, id, trigger = null) {
         const collection = type === "income" ? state.plan.incomes : state.plan.expenses;
         const item = collection.find(entry => entry.id === id);
-        if (!item || !window.confirm('Delete "' + item.label + '"?')) return;
+        if (!item || !await requestDecision({ title: "Delete this entry?", message: 'Delete "' + item.label + '" from your money plan?', confirmLabel: "Delete entry", trigger })) return;
         const index = collection.findIndex(entry => entry.id === id);
         collection.splice(index, 1);
         if (type === "expense") state.plan.sharedCosts.forEach(shared => { if (shared.linkedExpenseId === id) shared.linkedExpenseId = null; });
@@ -2070,14 +2248,14 @@
         clearFormErrors(form);
         const label = form.elements.sharedLabel.value.trim();
         const totalCents = parseMoney(form.elements.sharedTotal.value);
-        const people = Number(form.elements.sharedPeople.value);
         const splitMode = form.elements.sharedMode.value;
+        const people = splitMode === "equal" ? Number(form.elements.sharedPeople.value) : 2;
         const customShare = parseMoney(form.elements.sharedShare.value.trim() || "0");
         let valid = true;
         if (!label || label.length > 80) { showFieldError("sharedLabel", "Use a label between 1 and 80 characters."); valid = false; }
         if (totalCents === null) { showFieldError("sharedTotal", "Enter a non-negative household total."); valid = false; }
         if (!validCalendarDate(form.elements.sharedDate.value)) { showFieldError("sharedDate", "Choose a valid date."); valid = false; }
-        if (!Number.isInteger(people) || people < 2 || people > 20) { showFieldError("sharedPeople", "Enter 2 to 20 people, including you."); valid = false; }
+        if (splitMode === "equal" && (!Number.isInteger(people) || people < 2 || people > 20)) { showFieldError("sharedPeople", "Enter 2 to 20 people, including you."); valid = false; }
         if (splitMode === "custom" && (customShare === null || (totalCents !== null && customShare > totalCents))) { showFieldError("sharedShare", "Enter your share, no more than the household total."); valid = false; }
         if (!valid) return;
         const shareCents = splitMode === "equal" ? splitCents(totalCents, people)[0] : customShare;
@@ -2096,11 +2274,11 @@
         showToast(existing ? "Shared cost and linked forecast expense updated." : convertId ? "Shared cost saved and existing expense converted." : "Shared cost saved. Add your share when ready.");
       }
 
-      function deleteSharedCost(id) {
+      async function deleteSharedCost(id, trigger = null) {
         const shared = state.plan.sharedCosts.find(item => item.id === id);
         if (!shared) return;
         const message = shared.linkedExpenseId ? 'Delete "' + shared.label + '" and its linked personal forecast expense?' : 'Delete "' + shared.label + '"?';
-        if (!window.confirm(message)) return;
+        if (!await requestDecision({ title: "Delete this shared cost?", message, confirmLabel: "Delete shared cost", trigger })) return;
         if (shared.linkedExpenseId) state.plan.expenses = state.plan.expenses.filter(expense => expense.id !== shared.linkedExpenseId);
         state.plan.sharedCosts = state.plan.sharedCosts.filter(item => item.id !== id);
         markDirty(); render(); showToast("Shared cost deleted.");
@@ -2153,21 +2331,21 @@
         markDirty(); render(); showToast(index >= 0 ? "Contribution schedule updated." : "Contributions added to your plan.");
       }
 
-      function removeContribution(goalId, contributionId) {
+      async function removeContribution(goalId, contributionId, trigger = null) {
         const goal = state.plan.goals.find(item => item.id === goalId);
         const entry = goal && goal.contributions.find(item => item.id === contributionId);
-        if (!entry || !window.confirm('Delete the contribution schedule "' + entry.label + '"? Linked Decision Lab changes will also be removed.')) return;
+        if (!entry || !await requestDecision({ title: "Delete this contribution?", message: 'Delete the contribution schedule "' + entry.label + '"? Linked Decision Lab changes will also be removed.', confirmLabel: "Delete contribution", trigger })) return;
         goal.contributions = goal.contributions.filter(item => item.id !== contributionId);
         state.plan.scenarios.forEach(scenario => scenario.changes = scenario.changes.filter(change => !(change.type === "contribution-change" && change.sourceId === contributionId)));
         state.scenarioDraft = null;
         markDirty(); render(); showToast("Contribution schedule deleted.");
       }
 
-      function removeGoal(id) {
+      async function removeGoal(id, trigger = null) {
         const goal = state.plan.goals.find(item => item.id === id);
         if (!goal) return;
         const copy = goal.contributions.length ? " This also removes its planned transfers and linked Decision Lab changes." : "";
-        if (!window.confirm('Delete the goal "' + goal.name + '"?' + copy)) return;
+        if (!await requestDecision({ title: "Delete this goal?", message: 'Delete the goal "' + goal.name + '"?' + copy, confirmLabel: "Delete goal", trigger })) return;
         const contributionIds = new Set(goal.contributions.map(item => item.id));
         state.plan.goals = state.plan.goals.filter(item => item.id !== id);
         state.plan.scenarios.forEach(scenario => scenario.changes = scenario.changes.filter(change => !(change.type === "contribution-change" && (change.goalId === id || contributionIds.has(change.sourceId)))));
@@ -2199,15 +2377,18 @@
 
       function openPlanFile(file) {
         if (!file) return;
-        if (file.size > 1024 * 1024) { showToast("That file is too large to be a Bluegrass Bloom plan.", true); return; }
+        clearFileFeedback();
+        if (file.size > 1024 * 1024) { showFileFeedback("That file is too large to be a Bluegrass Bloom plan. Current work was kept."); return; }
         const reader = new FileReader();
-        reader.onload = () => {
+        reader.onload = async () => {
           try {
             const parsed = JSON.parse(String(reader.result));
             const result = validatePlan(parsed);
             if (!result.valid) throw new Error(result.errors[0]);
-            if (!confirmReplace("Opening this plan")) return;
+            if (!await confirmReplace("Opening this plan", lastOpenTrigger)) return;
             state.plan = normalizePlan(parsed);
+            delete state.plan.demoStory;
+            state.plan.demo = false;
             state.planDirty = false;
             state.scenarioDraft = null;
             state.scenarioDraftBaseline = null;
@@ -2221,17 +2402,17 @@
             render();
             showToast("Plan opened successfully.");
           } catch (error) {
-            showToast("Plan not opened: " + (error.message || "invalid JSON file") + " Current work was kept.", true);
+            showFileFeedback("Plan not opened: " + (error.message || "invalid JSON file") + " Current work was kept.");
           } finally {
             fileInput.value = "";
           }
         };
-        reader.onerror = () => { showToast("The file could not be read. Current work was kept.", true); fileInput.value = ""; };
+        reader.onerror = () => { showFileFeedback("The file could not be read. Current work was kept."); fileInput.value = ""; };
         reader.readAsText(file);
       }
 
-      function switchScenario(id) {
-        if (state.scenarioDraftDirty && !window.confirm("Discard the active draft changes and switch scenarios?")) return;
+      async function switchScenario(id, trigger = null) {
+        if (state.scenarioDraftDirty && !await requestDecision({ title: "Discard draft changes?", message: "Switching scenarios will discard the active draft changes.", confirmLabel: "Discard and switch", trigger })) return;
         const scenario = state.plan.scenarios.find(item => item.id === id);
         if (!scenario) return;
         state.activeScenarioId = scenario.id;
@@ -2243,10 +2424,10 @@
         render();
       }
 
-      function handleScenarioAction(action) {
+      async function handleScenarioAction(action, trigger = null) {
         ensureScenarioDraft();
         if (action === "new") {
-          if (state.scenarioDraftDirty && !window.confirm("Discard the active draft changes and start a new scenario?")) return;
+          if (state.scenarioDraftDirty && !await requestDecision({ title: "Discard draft changes?", message: "Starting a new scenario will discard the active draft changes.", confirmLabel: "Discard and start", trigger })) return;
           if (state.plan.scenarios.length >= 3) { showToast("You can save up to three scenarios. Delete one before starting another.", true); return; }
           state.activeScenarioId = null;
           state.scenarioDraft = emptyScenario("New decision");
@@ -2263,7 +2444,7 @@
           render();
           showToast("Draft changes discarded. The original comparison is restored.");
         } else if (action === "delete") {
-          if (!state.activeScenarioId || !window.confirm("Delete this saved scenario? Your baseline money plan will not change.")) return;
+          if (!state.activeScenarioId || !await requestDecision({ title: "Delete this scenario?", message: "Delete this saved scenario? Your baseline money plan will not change.", confirmLabel: "Delete scenario", trigger })) return;
           const index = state.plan.scenarios.findIndex(scenario => scenario.id === state.activeScenarioId);
           if (index >= 0) state.plan.scenarios.splice(index, 1);
           const next = state.plan.scenarios[0] || null;
@@ -2278,9 +2459,9 @@
         }
       }
 
-      function handleAction(action) {
+      async function handleAction(action, trigger = null) {
         if (action === "create-plan") {
-          if (!confirmReplace("Creating a new plan")) return;
+          if (!await confirmReplace("Creating a new plan", trigger)) return;
           state.plan = emptyPlan();
           state.screen = "onboarding";
           state.onboardingStep = 1;
@@ -2292,23 +2473,31 @@
           saveLocal();
           render();
         } else if (action === "load-demo") {
-          if (!confirmReplace("Loading the fictional demo")) return;
+          if (!await confirmReplace("Loading the fictional demo", trigger)) return;
           state.plan = demoPlan(state.plan ? state.plan.planningStartDate : todayISO());
+          const demoScenario = state.plan.scenarios[0];
           state.screen = "app";
-          state.view = "overview";
+          state.view = "lab";
+          state.forecastHorizon = 30;
+          state.forecastIncomeMode = "expected";
           state.dirty = true;
           state.planDirty = true;
-          state.scenarioDraft = null;
+          state.activeScenarioId = demoScenario.id;
+          state.scenarioDraft = clonePlan(demoScenario);
+          state.scenarioDraftBaseline = clonePlan(demoScenario);
           state.scenarioDraftDirty = false;
           resetTransientEditors();
           saveLocal();
           render();
-          showToast("Fictional sample loaded. It is not research or a real person.");
+          showToast("Fictional UK student demo loaded in the Decision Lab.");
         } else if (action === "save-plan") savePlanFile();
-        else if (action === "open-plan") fileInput.click();
+        else if (action === "open-plan") {
+          lastOpenTrigger = trigger;
+          clearFileFeedback();
+          fileInput.click();
+        }
         else if (action === "reset-plan") {
-          if (!confirmReplace("Resetting Bluegrass Bloom")) return;
-          if (!window.confirm("Reset this plan and return to the welcome screen?")) return;
+          if (!await requestDecision({ title: "Reset Bluegrass Bloom?", message: "This clears the current plan from this browser and returns to the welcome screen.", confirmLabel: "Reset plan", trigger })) return;
           state.plan = null;
           state.dirty = false;
           state.planDirty = false;
@@ -2320,7 +2509,7 @@
           try { localStorage.removeItem(STORAGE_KEY); } catch (_) { storageAvailable = false; }
           render();
         } else if (action === "cancel-onboarding") {
-          if (!confirmReplace("Canceling setup")) return;
+          if (!await confirmReplace("Canceling setup", trigger)) return;
           state.plan = null;
           state.dirty = false;
           state.planDirty = false;
@@ -2350,7 +2539,7 @@
 
       app.addEventListener("click", event => {
         const actionTarget = event.target.closest("[data-action]");
-        if (actionTarget) { handleAction(actionTarget.dataset.action); return; }
+        if (actionTarget) { void handleAction(actionTarget.dataset.action, actionTarget); return; }
         const viewTarget = event.target.closest("[data-view]");
         if (viewTarget) { state.view = viewTarget.dataset.view; render(); window.scrollTo(0, 0); return; }
         const addTarget = event.target.closest("[data-add]");
@@ -2358,7 +2547,7 @@
         const editTarget = event.target.closest("[data-edit]");
         if (editTarget) { openEntryDialog(editTarget.dataset.edit, editTarget.dataset.id); return; }
         const deleteTarget = event.target.closest("[data-delete]");
-        if (deleteTarget) { deleteEntry(deleteTarget.dataset.delete, deleteTarget.dataset.id); return; }
+        if (deleteTarget) { void deleteEntry(deleteTarget.dataset.delete, deleteTarget.dataset.id, deleteTarget); return; }
         const editContributionTarget = event.target.closest("[data-edit-contribution]");
         if (editContributionTarget) {
           const [goalId, id] = editContributionTarget.dataset.editContribution.split("|");
@@ -2369,22 +2558,23 @@
         const goalEdit = event.target.closest("[data-goal-edit]");
         if (goalEdit) { state.goalEditorId = goalEdit.dataset.goalEdit; state.contributionEditor = null; state.contributionPreview = null; render(); return; }
         const goalDelete = event.target.closest("[data-goal-delete]");
-        if (goalDelete) { removeGoal(goalDelete.dataset.goalDelete); return; }
+        if (goalDelete) { void removeGoal(goalDelete.dataset.goalDelete, goalDelete); return; }
         if (event.target.closest("[data-goal-cancel]")) { state.goalEditorId = null; render(); return; }
         const contributionNew = event.target.closest("[data-contribution-new]");
         if (contributionNew) { state.contributionEditor = { goalId: contributionNew.dataset.contributionNew, id: null }; state.contributionPreview = null; state.goalEditorId = null; render(); return; }
         const contributionEdit = event.target.closest("[data-contribution-edit]");
         if (contributionEdit) { const [goalId, id] = contributionEdit.dataset.contributionEdit.split("|"); state.contributionEditor = { goalId, id }; state.contributionPreview = null; state.goalEditorId = null; render(); return; }
         const contributionDelete = event.target.closest("[data-contribution-delete]");
-        if (contributionDelete) { const [goalId, id] = contributionDelete.dataset.contributionDelete.split("|"); removeContribution(goalId, id); return; }
+        if (contributionDelete) { const [goalId, id] = contributionDelete.dataset.contributionDelete.split("|"); void removeContribution(goalId, id, contributionDelete); return; }
         if (event.target.closest("[data-contribution-cancel]")) { state.contributionEditor = null; state.contributionPreview = null; render(); return; }
         if (event.target.closest("[data-contribution-preview-cancel]")) { state.contributionPreview = null; render(); return; }
         if (event.target.closest("[data-contribution-commit]")) { commitContribution(); return; }
+        if (event.target.closest("[data-demo-payday]")) { moveDemoPurchaseToPayday(); return; }
         if (event.target.closest("[data-shared-new]")) { state.sharedEditorId = "new"; render(); return; }
         const sharedEdit = event.target.closest("[data-shared-edit]");
         if (sharedEdit) { state.sharedEditorId = sharedEdit.dataset.sharedEdit; render(); return; }
         const sharedDelete = event.target.closest("[data-shared-delete]");
-        if (sharedDelete) { deleteSharedCost(sharedDelete.dataset.sharedDelete); return; }
+        if (sharedDelete) { void deleteSharedCost(sharedDelete.dataset.sharedDelete, sharedDelete); return; }
         const sharedLink = event.target.closest("[data-shared-link]");
         if (sharedLink) { const shared = state.plan.sharedCosts.find(item => item.id === sharedLink.dataset.sharedLink); if (shared) { linkSharedExpense(shared); markDirty(); render(); showToast("Your share was added to the plan and forecast."); } return; }
         if (event.target.closest("[data-shared-cancel]")) { state.sharedEditorId = null; render(); return; }
@@ -2405,9 +2595,9 @@
           return;
         }
         const scenarioAction = event.target.closest("[data-scenario-action]");
-        if (scenarioAction) { handleScenarioAction(scenarioAction.dataset.scenarioAction); return; }
+        if (scenarioAction) { void handleScenarioAction(scenarioAction.dataset.scenarioAction, scenarioAction); return; }
         const scenarioSwitch = event.target.closest("[data-scenario-switch]");
-        if (scenarioSwitch) { switchScenario(scenarioSwitch.dataset.scenarioSwitch); return; }
+        if (scenarioSwitch) { void switchScenario(scenarioSwitch.dataset.scenarioSwitch, scenarioSwitch); return; }
         const scenarioEdit = event.target.closest("[data-scenario-edit-change]");
         if (scenarioEdit) { state.scenarioEditingChangeId = scenarioEdit.dataset.scenarioEditChange; render(); return; }
         const scenarioRemove = event.target.closest("[data-scenario-remove-change]");
@@ -2452,6 +2642,17 @@
       });
 
       app.addEventListener("change", event => {
+        if (event.target.id === "sharedMode") {
+          const peopleField = document.getElementById("sharedPeopleField");
+          const shareField = document.getElementById("sharedShareField");
+          if (peopleField) peopleField.hidden = event.target.value !== "equal";
+          if (shareField) shareField.hidden = event.target.value !== "custom";
+          if (event.target.value === "custom") {
+            const shareInput = document.getElementById("sharedShare");
+            if (shareInput) window.setTimeout(() => shareInput.focus(), 0);
+          }
+          return;
+        }
         if (event.target.id === "scenarioReflection" && state.scenarioDraft) {
           state.scenarioDraft.reflection = event.target.value;
           syncScenarioDraftDirty();
@@ -2460,6 +2661,20 @@
       });
 
       entryForm.addEventListener("submit", event => { event.preventDefault(); saveEntry(entryForm); });
+      decisionCancel.addEventListener("click", () => settleDecision(false));
+      decisionConfirm.addEventListener("click", () => settleDecision(true));
+      decisionDialog.addEventListener("cancel", event => { event.preventDefault(); settleDecision(false); });
+      decisionDialog.addEventListener("keydown", event => {
+        if (event.key !== "Tab") return;
+        const controls = [decisionCancel, decisionConfirm].filter(control => !control.disabled);
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      });
+      decisionDialog.addEventListener("click", event => {
+        if (event.target === decisionDialog) settleDecision(false);
+      });
       dialog.addEventListener("click", event => {
         if (event.target.hasAttribute("data-close-dialog")) dialog.close();
         if (event.target === dialog) {
